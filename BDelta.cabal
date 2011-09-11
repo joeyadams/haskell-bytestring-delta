@@ -1,0 +1,45 @@
+Name: BDelta
+Version: 0.1.1
+License: MIT
+Maintainer: Joey Adams <joeyadams3.14159@gmail.com>
+Author: Joey Adams
+Copyright: Copyright (C) 2011 Joseph Adams
+License-file: LICENSE
+Category: Data
+Synopsis: ByteString diff/patch
+
+Description:
+ Space-efficient delta encoding between two ByteStrings.
+ .
+ The 'diff' function takes two ByteStrings, and produces a "patch" that
+ can later be applied with the 'patch' function to the first string to produce
+ the second string.  It exploits similarities between the two strings, and can
+ be used to save bandwidth and disk space when many strings differing by a
+ small number of bytes need to be transmitted or stored.
+ .
+ Deltas produced by this version of the library can be applied using
+ current or future versions, but may not be compatible with past versions.
+ .
+ bdelta implements the algorithm described in
+ An O(ND) Difference Algorithm and Its Variations by Eugene W. Myers.
+ Because its memory usage and expected running time are O(N + D^2),
+ it works well only when the strings differ by a small number of bytes.
+ This implementation stops trying when the strings differ by more than
+ 1000 bytes, and falls back to producing a patch that simply emits the new
+ string.
+ .
+ Thus, bdelta does not save any space when given two strings that differ by
+ more than 1000 bytes.  This may be improved in a future version of the
+ library.
+
+Extra-Source-Files: c/bdelta.c c/bdelta.h
+ 
+Stability: experimental
+Build-Type: Simple -- ???
+
+Library
+    Exposed-Modules:  Data.BDelta
+    GHC-Options:      -Wall -O2
+    C-Sources:        c/bdelta.c
+    CC-Options:       -Wall -O3
+    Include-Dirs:     c
