@@ -1,13 +1,14 @@
 import BDelta (diff, patch)
 
 import Control.Applicative ((<$>))
-import Control.Monad (replicateM)
+import Control.Exception (evaluate)
+import Control.Monad (replicateM, forM_)
 import Data.Function (on)
 import Data.List (sortBy)
 import Data.String (IsString(fromString))
 import Data.Word (Word8)
 import Test.QuickCheck (Arbitrary(arbitrary), CoArbitrary(coarbitrary),
-                        Testable, quickCheckWith, stdArgs, Args(maxSize),
+                        quickCheckWith, stdArgs, Args(maxSize),
                         choose)
 
 import qualified Data.ByteString as B
@@ -87,11 +88,13 @@ instance Arbitrary Similar where
 prop_match_similar :: Similar -> Bool
 prop_match_similar (Similar (Wrap a) (Wrap b)) = patch a (diff a b) == Just b
 
+try_to_leak :: IO ()
+try_to_leak = forM_ [1..100 :: Int] $ \i ->
+    evaluate $ diff (B.empty) (B.replicate 1000000 (fromIntegral i))
+
 main :: IO ()
 main = do
-    let qc :: (Testable prop) => prop -> IO ()
-        qc = quickCheckWith stdArgs {maxSize = 1000}
-    qc prop_match
-    qc prop_equal
-    qc prop_match_similar
-
+    quickCheckWith stdArgs {maxSize = 1000} prop_match
+    quickCheckWith stdArgs {maxSize = 1000} prop_match_similar
+    quickCheckWith stdArgs {maxSize = 1000} prop_equal
+    try_to_leak
