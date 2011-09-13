@@ -16,10 +16,10 @@ data BDeltaResult = BDeltaOK ByteString
                   | BDeltaPatchMismatch
                   | BDeltaInternal
 
-foreign import ccall unsafe "bdelta.h bdelta_diff"
+foreign import ccall safe "bdelta.h bdelta_diff"
     bdelta_diff :: BDeltaFunc
 
-foreign import ccall unsafe "bdelta.h bdelta_patch"
+foreign import ccall safe "bdelta.h bdelta_patch"
     bdelta_patch :: BDeltaFunc
 
 -- I don't know if Foreign.Marshal.Alloc.free is guaranteed
