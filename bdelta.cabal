@@ -10,7 +10,7 @@ Description:
     The underlying implementation is written in C, and can also be found at
     <http://ccan.ozlabs.org/info/bdelta.html>.
     .
-    Currently, the patch does not save any space when two strings differ by
+    Currently, a patch does not save any space when two strings differ by
     more than 1000 bytes.  This arbitrary limit serves to keep applications
     from spiking in memory and CPU usage, as the algorithm uses quadratic
     space and time with respect to the length of the patch.  A better

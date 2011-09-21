@@ -8,9 +8,9 @@
 -- Stability:    experimental
 -- Portability:  unknown
 --
--- Space-efficient delta encoding between two ByteStrings.
+-- Binary diff/patch for 'ByteString's.
 --
--- The 'diff' function takes two ByteStrings, and produces a \"patch\" that
+-- The 'diff' function takes two 'ByteString's, and produces a \"patch\" that
 -- can later be applied with the 'patch' function to the first string to produce
 -- the second string.  It exploits common subsequences between the two strings,
 -- and can be used to save bandwidth and disk space when many strings differing
