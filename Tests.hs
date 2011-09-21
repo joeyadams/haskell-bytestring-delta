@@ -1,4 +1,4 @@
-import BDelta (diff, patch)
+import Data.BDelta (diff, patch)
 
 import Control.Applicative ((<$>))
 import Control.Exception (evaluate)

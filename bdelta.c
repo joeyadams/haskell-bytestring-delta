@@ -623,7 +623,7 @@ oom1:
 	return BDELTA_MEMORY;
 }
 
-int bdelta_diff(
+BDELTAcode bdelta_diff(
 	const void  *old,       size_t  old_size,
 	const void  *new_,      size_t  new_size,
 	void       **patch_out, size_t *patch_size_out)
@@ -758,7 +758,7 @@ out_of_memory:
 	return BDELTA_MEMORY;
 }
 
-int bdelta_patch(
+BDELTAcode bdelta_patch(
 	const void  *old,     size_t  old_size,
 	const void  *patch,   size_t  patch_size,
 	void       **new_out, size_t *new_size_out)
