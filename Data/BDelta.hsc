@@ -1,3 +1,4 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 -- |
 -- Module:       Data.BDelta
 -- Copyright:    (c) Joseph Adams 2011
@@ -36,9 +37,11 @@ module Data.BDelta (diff, patch) where
 
 import Data.ByteString (ByteString, packCStringLen)
 import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
+import Data.Int
+import Data.Word
 import Foreign (Ptr, alloca, peek, unsafePerformIO)
-import Foreign.C.String (peekCAString)
-import Foreign.C.Types (CSize, CInt, CChar)
+import Foreign.C.String (CString, peekCAString)
+import Foreign.C.Types (CChar, CSize)
 
 type BDELTAcode = #{type BDELTAcode}
 
@@ -54,7 +57,7 @@ foreign import ccall safe "bdelta.h bdelta_patch"
     bdelta_patch :: BDeltaFunc
 
 foreign import ccall unsafe "bdelta.h bdelta_strerror"
-    bdelta_strerror :: BDELTAcode -> CString
+    bdelta_strerror :: BDELTAcode -> IO CString
 
 -- I don't know if Foreign.Marshal.Alloc.free is guaranteed
 -- to be compatible with stdlib's free or not.
@@ -82,7 +85,7 @@ callBDeltaFunc func old new =
             _ -> return $ Left rc
 
 strerror :: BDELTAcode -> String
-strerror = peekCAString . bdelta_strerror
+strerror code = unsafePerformIO $ peekCAString =<< bdelta_strerror code
 
 -- | Compute a delta between two 'ByteString's.
 --
@@ -98,9 +101,9 @@ diff old new =
 -- If the patch cannot be applied, this function returns @Left errmsg@,
 -- where @errmsg@ is a string describing the error.
 patch :: ByteString -> ByteString -> Either String ByteString
-patch old patch =
-    case callBDeltaFunc bdelta_patch old patch of
-         BDeltaOK result                    -> Right result
-         rc@#{const BDELTA_PATCH_INVALID}   -> Left $ strerror rc
-         rc@#{const BDELTA_PATCH_MISMATCH}  -> Left $ strerror rc
-         rc                                 -> error $ "BDelta.patch: " ++ strerror rc
+patch old patch_ =
+    case callBDeltaFunc bdelta_patch old patch_ of
+         Right result                               -> Right result
+         Left (rc @ #{const BDELTA_PATCH_INVALID})  -> Left $ strerror rc
+         Left (rc @ #{const BDELTA_PATCH_MISMATCH}) -> Left $ strerror rc
+         Left rc                                    -> error $ "BDelta.patch: " ++ strerror rc

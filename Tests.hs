@@ -34,12 +34,12 @@ instance CoArbitrary ByteString where
     coarbitrary = coarbitrary . unpack
 
 prop_match :: ByteString -> ByteString -> Bool
-prop_match (Wrap a) (Wrap b) = patch a (diff a b) == Just b
+prop_match (Wrap a) (Wrap b) = patch a (diff a b) == Right b
 
 prop_equal :: ByteString -> Bool
 prop_equal (Wrap s) =
     let d = diff s s
-    in B.length d < 10 && patch s d == Just s
+    in B.length d < 10 && patch s d == Right s
 
 data Edit = Insert Int Word8
           | Delete Int
@@ -86,7 +86,7 @@ instance Arbitrary Similar where
         return $ Similar old (applyEditString editString old)
 
 prop_match_similar :: Similar -> Bool
-prop_match_similar (Similar (Wrap a) (Wrap b)) = patch a (diff a b) == Just b
+prop_match_similar (Similar (Wrap a) (Wrap b)) = patch a (diff a b) == Right b
 
 try_to_leak :: IO ()
 try_to_leak = forM_ [1..100 :: Int] $ \i ->
