@@ -1,4 +1,4 @@
-Name:                bdelta
+Name:                bytestring-delta
 Version:             0.1
 Synopsis:            Simple, fast binary diff/patch
 Description:
@@ -16,7 +16,7 @@ Description:
     space and time with respect to the length of the patch.  A better
     algorithm may be introduced in a future version of bdelta.
 
-Homepage:            http://github.com/joeyadams/haskell-bdelta
+Homepage:            http://github.com/joeyadams/haskell-bytestring-delta
 License:             MIT
 License-file:        LICENSE
 Author:              Joey Adams
@@ -30,7 +30,7 @@ Cabal-version:       >=1.6
 
 source-repository head
     type:       git
-    location:   git://github.com/joeyadams/haskell-bdelta.git
+    location:   git://github.com/joeyadams/haskell-bytestring-delta.git
 
 Library
   Exposed-modules:     Data.BDelta
