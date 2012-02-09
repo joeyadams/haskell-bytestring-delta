@@ -39,9 +39,18 @@ import Data.ByteString (ByteString, packCStringLen)
 import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
 import Data.Int
 import Data.Word
-import Foreign (Ptr, alloca, peek, unsafePerformIO)
+import Foreign (Ptr, alloca, peek)
 import Foreign.C.String (CString, peekCAString)
-import Foreign.C.Types (CChar, CSize)
+import Foreign.C.Types
+
+#if MIN_VERSION_base(4,4,0)
+import Foreign.Marshal.Unsafe (unsafeLocalState)
+#else
+import System.IO.Unsafe (unsafePerformIO)
+
+unsafeLocalState :: IO a -> a
+unsafeLocalState = unsafePerformIO
+#endif
 
 type BDELTAcode = #{type BDELTAcode}
 
@@ -66,7 +75,7 @@ foreign import ccall unsafe "stdlib.h free"
 
 callBDeltaFunc :: BDeltaFunc -> ByteString -> ByteString -> Either BDELTAcode ByteString
 callBDeltaFunc func old new =
-    unsafePerformIO $
+    unsafeLocalState $
     unsafeUseAsCStringLen old $ \(oldPtr, oldSize) ->
     unsafeUseAsCStringLen new $ \(newPtr, newSize) ->
     alloca $ \diffPtrPtr ->
@@ -85,7 +94,7 @@ callBDeltaFunc func old new =
             _ -> return $ Left rc
 
 strerror :: BDELTAcode -> String
-strerror code = unsafePerformIO $ peekCAString =<< bdelta_strerror code
+strerror code = unsafeLocalState $ bdelta_strerror code >>= peekCAString
 
 -- | Compute a delta between two 'ByteString's.
 --
