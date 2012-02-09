@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 -- |
--- Module:       Data.BDelta
+-- Module:       Data.ByteString.Delta
 -- Copyright:    (c) Joseph Adams 2011
 -- License:      MIT
 --
@@ -31,7 +31,10 @@
 -- more than 1000 bytes.  This may be improved in a future version of the
 -- library.
 
-module Data.BDelta (diff, patch) where
+module Data.ByteString.Delta (
+    diff,
+    patch,
+) where
 
 #include "bdelta.h"
 

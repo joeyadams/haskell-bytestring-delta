@@ -1,4 +1,4 @@
-import Data.BDelta (diff, patch)
+import Data.ByteString.Delta (diff, patch)
 
 import Control.Applicative ((<$>))
 import Control.Exception (evaluate)
