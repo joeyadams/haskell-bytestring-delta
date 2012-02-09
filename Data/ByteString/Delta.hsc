@@ -19,7 +19,7 @@
 -- Deltas produced by this version of the library can be applied using
 -- current or future versions, but may not be compatible with past versions.
 --
--- bdelta implements the algorithm described in
+-- bytestring-delta implements the algorithm described in
 -- /An O(ND) Difference Algorithm and Its Variations/ by Eugene W. Myers.
 -- Because its memory usage and expected running time are O(N + D^2),
 -- it works well only when the strings differ by a small number of bytes.
@@ -27,9 +27,9 @@
 -- 1000 bytes, and falls back to producing a patch that simply emits the new
 -- string.
 --
--- Thus, bdelta does not save any space when given two strings that differ by
--- more than 1000 bytes.  This may be improved in a future version of the
--- library.
+-- Thus, bytestring-delta does not save any space when given two strings that
+-- differ by more than 1000 bytes.  This may be improved in a future version of
+-- the library.
 
 module Data.ByteString.Delta (
     diff,
@@ -106,7 +106,7 @@ diff :: ByteString -> ByteString -> ByteString
 diff old new =
     case callBDeltaFunc bdelta_diff old new of
          Right result  -> result
-         Left  errcode -> error $ "BDelta.diff: " ++ strerror errcode
+         Left  errcode -> error $ "Data.ByteString.Delta.diff: " ++ strerror errcode
 
 -- | Apply a delta produced by 'diff'.
 --
@@ -118,4 +118,4 @@ patch old patch_ =
          Right result                               -> Right result
          Left (rc @ #{const BDELTA_PATCH_INVALID})  -> Left $ strerror rc
          Left (rc @ #{const BDELTA_PATCH_MISMATCH}) -> Left $ strerror rc
-         Left rc                                    -> error $ "BDelta.patch: " ++ strerror rc
+         Left rc                                    -> error $ "Data.ByteString.Delta.patch: " ++ strerror rc
