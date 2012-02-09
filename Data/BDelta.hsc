@@ -5,8 +5,11 @@
 -- License:      MIT
 --
 -- Maintainer:   joeyadams3.14159@gmail.com
--- Stability:    experimental
+-- Stability:    deprecated (renamed to bytestring-delta)
 -- Portability:  unknown
+--
+-- /This package has been renamed.  Please import Data.ByteString.Delta from/
+-- /the bytestring-delta package instead./
 --
 -- Binary diff/patch for 'ByteString's.
 --
@@ -31,7 +34,13 @@
 -- more than 1000 bytes.  This may be improved in a future version of the
 -- library.
 
-module Data.BDelta (diff, patch) where
+module Data.BDelta
+{-# DEPRECATED "bdelta has been renamed.  Please use package bytestring-delta instead." #-}
+(
+    diff,
+    patch,
+)
+where
 
 #include "bdelta.h"
 
