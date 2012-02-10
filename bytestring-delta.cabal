@@ -25,7 +25,7 @@ Copyright:           Copyright (c) Joseph Adams 2011
 Category:            Data
 
 Build-type:          Simple
-Extra-source-files:  bdelta.c bdelta.h
+Extra-source-files:  bdelta.c bdelta.h Tests.hs
 Cabal-version:       >=1.6
 
 source-repository head
