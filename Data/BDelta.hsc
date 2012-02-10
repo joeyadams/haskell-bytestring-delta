@@ -8,8 +8,13 @@
 -- Stability:    deprecated (renamed to bytestring-delta)
 -- Portability:  unknown
 --
--- /This package has been renamed.  Please import Data.ByteString.Delta from/
--- /the bytestring-delta package instead./
+-- This package has been renamed from bdelta to bytestring-delta, to avoid
+-- conflicting with an existing project by the same name:
+--
+--  * <http://bdelta.org>
+--
+-- Please import Data.ByteString.Delta from the bytestring-delta package
+-- instead.
 --
 -- Binary diff/patch for 'ByteString's.
 --

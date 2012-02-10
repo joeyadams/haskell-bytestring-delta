@@ -2,7 +2,10 @@ Name:                bdelta
 Version:             0.1.1
 Synopsis:            Simple, fast binary diff/patch
 Description:
-    /This package has been renamed to bytestring-delta./
+    This package has been renamed from bdelta to bytestring-delta, to avoid
+    conflicting with an existing project by the same name:
+    .
+        * <http://bdelta.org>
     .
     Compute a patch between two ByteStrings which can later be applied to the
     first to produce the second.  This can be used to save bandwidth and disk
