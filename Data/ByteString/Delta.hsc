@@ -1,4 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE CPP, ForeignFunctionInterface #-}
 -- |
 -- Module:       Data.ByteString.Delta
 -- Copyright:    (c) Joseph Adams 2011
@@ -46,14 +46,14 @@ import Foreign (Ptr, alloca, peek)
 import Foreign.C.String (CString, peekCAString)
 import Foreign.C.Types
 
-#if MIN_VERSION_base(4,4,0)
+##if MIN_VERSION_base(4,4,0)
 import Foreign.Marshal.Unsafe (unsafeLocalState)
-#else
+##else
 import System.IO.Unsafe (unsafePerformIO)
 
 unsafeLocalState :: IO a -> a
 unsafeLocalState = unsafePerformIO
-#endif
+##endif
 
 type BDELTAcode = #{type BDELTAcode}
 
